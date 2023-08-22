@@ -66,8 +66,36 @@ def add_items():
             while (True):
                 speak("What do you want to add?")
                 item = listen()
-                file.write(item + "\n")
+                file.write(item.upper() + "\n")
                 speak("Do you want to add anything else?")
+                choice = listen()
+                if "YES" in choice.upper():
+                    continue
+                else:
+                    speak("Ok")
+                    break
+        file.close()
+    except FileNotFoundError:
+        speak("File not found.")
+
+
+def remove_items():
+    try:
+        with open('todo.txt', 'r') as file:
+            content = file.read()
+            while (True):
+                speak("What do you want to remove?")
+                item = listen()
+                if item.upper() in content:
+                    modified_content = content.replace(item.upper(), '')
+                    with open('todo.txt', 'w') as file:
+                        file.write(modified_content)
+                        speak(f"Removed {item} from the list")
+                        file.close()
+                    break
+                else:
+                    speak("Item is not in the list.")
+                speak("Do you want to remove anything else?")
                 choice = listen()
                 if "YES" in choice.upper():
                     continue
@@ -95,13 +123,16 @@ while (True):
         speak(weather)
 
     elif "LIST" in comm.upper():
-        speak("Do you want to read the todo list or add a new item?")
+        speak("Do you want to read the todo list or add a new item or remove an item?")
         choice = listen()
         if "read" in choice:
             read_todo_list()
-        elif ("add" or "write") in choice:
+        elif "add" in choice:
             add_items()
+        elif "remove" in choice:
+            remove_items()
         else:
+            speak("Function not found.")
             pass
     elif ("EXIT" or "QUIT" or "TERMINATE") in comm.upper():
         speak("Have a nice day sir.")
