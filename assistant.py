@@ -7,6 +7,14 @@ import speech_recognition as sr
 apiKey = "a76b879d7578a0221a142c42b628f930"
 ct = datetime.datetime.now()
 
+NEWS_API_KEY = "b8785bf074204bcfa456c5b2b5989ffd"
+NEWS_BASE_URL = 'https://newsapi.org/v2/top-headlines'
+params = {
+    'country': 'in',
+    'category': 'general',
+    'apiKey': NEWS_API_KEY
+}
+
 engine = pyttsx3.init()
 
 
@@ -118,6 +126,27 @@ def greet():
         return "Hello sir"
 
 
+def get_news():
+    response = requests.get(NEWS_BASE_URL, params=params)
+    if response.status_code == 200:
+        news_data = response.json()
+        articles = news_data['articles']
+        count = 0
+        for article in articles:
+            title = article['title']
+            description = article['description']
+            source = article['source']['name']
+            print(
+                f"From {source}. Title: {title}. Description: {description}.")
+            speak(
+                f"From {source}. Title: {title}. Description: {description}.")
+            count += 1
+            if count == 3:
+                break
+    else:
+        print("Error fetching news:", response.status_code)
+
+
 speak(f"{greet()}, how may I help you?")
 
 failure_counter = 0
@@ -145,6 +174,8 @@ while (True):
         else:
             speak("Function not found.")
             pass
+    elif "NEWS" in comm.upper():
+        get_news()
     elif ("EXIT" or "QUIT" or "TERMINATE") in comm.upper():
         speak("Have a nice day sir.")
         break
