@@ -107,7 +107,18 @@ def remove_items():
         speak("File not found.")
 
 
-speak("Hello sir, how may I help you?")
+def greet():
+    if 4 <= ct.hour <= 12:
+        return "Good morning sir"
+    elif 12 < ct.hour <= 17:
+        return "Good afternoon sir"
+    elif 17 < ct.hour <= 11:
+        return "Good evening sir"
+    else:
+        return "Hello sir"
+
+
+speak(f"{greet()}, how may I help you?")
 
 failure_counter = 0
 
@@ -137,7 +148,7 @@ while (True):
     elif ("EXIT" or "QUIT" or "TERMINATE") in comm.upper():
         speak("Have a nice day sir.")
         break
-    elif ("stop listening" or "pause") in comm:
+    elif ("stop" or "stop listening" or "pause") in comm:
         speak("Ok, press any key to enable listening.")
         n = input("Press any key to enable listening.")
         continue
