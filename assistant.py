@@ -3,11 +3,15 @@ import datetime
 import requests
 import json
 import speech_recognition as sr
+import os
+from dotenv import load_dotenv
 
-apiKey = "a76b879d7578a0221a142c42b628f930"
+load_dotenv()
+
+apiKey = os.getenv("apikey")
 ct = datetime.datetime.now()
 
-NEWS_API_KEY = "b8785bf074204bcfa456c5b2b5989ffd"
+NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 NEWS_BASE_URL = 'https://newsapi.org/v2/top-headlines'
 params = {
     'country': 'in',
