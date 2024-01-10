@@ -34,7 +34,7 @@ def listen():
         r.pause_threshold = 0.7
         audio = r.listen(source)
         try:
-            speak("Recognising...")
+            # speak("Recognising...")
             Query = r.recognize_google(audio, language='en-in')
         except Exception as e:
             print(e)
